@@ -13,7 +13,7 @@
 ```bash
 sudo apt update
 sudo apt upgrade
-sudo apt install bubblewrap socat jq
+sudo apt install bubblewrap jq
 ```
 
 ## Claude Code IDE Integration

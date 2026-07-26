@@ -5,6 +5,18 @@
 # including .credentials.json, settings.json, or this hook script itself.
 set -euo pipefail
 
+# Fail closed: if anything here breaks (jq/bwrap missing, bad input, etc.) deny the command rather.
+fail_closed() {
+  trap - ERR
+  printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Hook self-protection: internal error, denying by default."}}'
+  exit 0
+}
+trap fail_closed ERR
+
+if ! command -v bwrap >/dev/null 2>&1; then
+  fail_closed
+fi
+
 input="$(cat)"
 tool_name="$(jq -r '.tool_name // empty' <<<"$input")"
 

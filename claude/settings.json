@@ -1,7 +1,14 @@
 {
   "theme": "dark",
   "deny": [
-    "Read(~/.claude/.credentials.json)"
+    "Read(~/.claude/.credentials.json)",
+    "Edit(~/.claude/.credentials.json)",
+    "Write(~/.claude/.credentials.json)",
+    "Edit(~/.claude/settings.json)",
+    "Write(~/.claude/settings.json)",
+    "Edit(~/.claude/hooks/**)",
+    "Write(~/.claude/hooks/**)",
+    "NotebookEdit(~/.claude/**)"
   ],
   "hooks": {
     "PreToolUse": [
@@ -10,7 +17,7 @@
         "hooks": [{ "type": "command", "command": "~/.claude/hooks/bwrap-sandbox.sh" }]
       },
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
         "hooks": [{ "type": "command", "command": "~/.claude/hooks/protect-claude-dir.sh" }]
       }
     ]
