@@ -69,6 +69,7 @@ Deny-LLMs G:\NoAIProjects
 ```powershell
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Set-Service -Name sshd -StartupType Automatic
+Start-Service sshd
 ```
 
 - Configure for localhost connection to the agent account
@@ -87,12 +88,12 @@ AllowUsers agent
 PasswordAuthentication no
 ```
 
-- Run the server
+- Restart the server
 
 > [!NOTE]
 > As Administrator
 ```powershell
-Start-Service sshd
+Restart-Service sshd
 ```
 
 ## SSH Default Shell
