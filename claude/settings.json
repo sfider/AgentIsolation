@@ -1,0 +1,18 @@
+{
+  "theme": "dark",
+  "deny": [
+    "Read(~/.claude/.credentials.json)"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/bwrap-sandbox.sh" }]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/protect-claude-dir.sh" }]
+      }
+    ]
+  }
+}
