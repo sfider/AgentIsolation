@@ -3,13 +3,11 @@
 ## Claude Code Settings Containment
 
 - By default, Claude has access to its `.credentials.json` and `settings.json`
-- You can use configuration supplied in the `claude` folder, to add some protection to it
+- You can use configuration supplied in the `claude` folder to add some protection
 - Copy the contents to `~/.claude` on WSL of your agent
 - If you already have `settings.json`, you'll have to merge it with the one provided
-
 - The configuration was designed by Claude, it seems to work, but probably is overengineered
 - I expect it won't work well with built-in Claude sandbox (`/sandbox` command), but I didn't try
-
 - For the hooks in the supplied `claude` folder to work, you'll need some perquisites:
 
 ```bash
@@ -39,3 +37,5 @@ mkdir G:\.claude_ide\ide
 ```bash
 ln -s /mnt/g/.claude_ide/ide ~/.claude/ide
 ```
+
+- This way IDE will know where to place the lock file, and the agent will have access to it

@@ -102,13 +102,7 @@ Start-Service sshd
 > [!NOTE]
 > As Administrator
 ```powershell
-New-ItemProperty @{
-    Path         = "HKLM:\SOFTWARE\OpenSSH"
-    Name         = "DefaultShell"
-    Value        = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    PropertyType = "String"
-    Force        = $true
-}
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name "DefaultShell" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -Force
 ```
 
 ## SSH Connection
@@ -140,7 +134,7 @@ copy $env:USERPROFILE\.ssh\agent_ed25519.pub G:\
 > As `agent` user (`runas /user:agent /savecred powershell`)
 ```powershell
 mkdir $env:USERPROFILE\.ssh
-Get-Content G:\\agent_ed25519.pub | Out-File -Encoding ascii $env:USERPROFILE\.ssh\authorized_keys
+Get-Content G:\agent_ed25519.pub | Out-File -Encoding ascii $env:USERPROFILE\.ssh\authorized_keys
 ```
 
 - Test ssh connection
