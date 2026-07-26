@@ -9,7 +9,7 @@
       "Edit(~/.claude/hooks/**)",
       "Write(~/.claude/hooks/**)",
       "NotebookEdit(~/.claude/**)"
-    ],
+    ]
   },
   "hooks": {
     "PreToolUse": [
