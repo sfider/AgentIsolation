@@ -23,6 +23,9 @@ sudo apt install bubblewrap jq
 - Create a `.claude_ide\ide` folders in a generally accessible location
 - Set `.claude_ide` as the `CLAUDE_CONFIG_DIR` for your user
 
+> [!WARNING]
+> This assumes you won't ever run the agent on your main account, so the `CLAUDE_CONFIG_DIR` is safe to use for this purpose
+
 > [!NOTE]
 > As your user
 ```powershell
