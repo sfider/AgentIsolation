@@ -33,10 +33,10 @@ encoded="$(printf '%s' "$command" | base64 -w0)"
 
 wrapped_command="bwrap --dev-bind / / --tmpfs \"$claude_dir\" --die-with-parent -- sh -c 'echo $encoded | base64 -d | bash'"
 
-jq -n --arg cmd "$wrapped_command" '{
+jq -n --argjson tool_input "$(jq -c '.tool_input' <<<"$input")" --arg cmd "$wrapped_command" '{
   hookSpecificOutput: {
     hookEventName: "PreToolUse",
     permissionDecision: "allow",
-    updatedInput: {command: $cmd}
+    updatedInput: ($tool_input + {command: $cmd})
   }
 }'
