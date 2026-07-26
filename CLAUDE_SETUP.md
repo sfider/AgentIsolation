@@ -25,7 +25,8 @@ sudo apt install bubblewrap socat jq
 - Create a `.claude_ide\ide` folders in a generally accessible location
 - Set `.claude_ide` as the `CLAUDE_CONFIG_DIR` for your user
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 mkdir G:\.claude_ide\ide
 [System.Environment]::SetEnvironmentVariable('CLAUDE_CONFIG_DIR', 'G:\.claude_ide', 'User')
@@ -33,7 +34,8 @@ mkdir G:\.claude_ide\ide
 
 - In `agent` wsl make a soft link `~/.claude/ide` pointing to the ide folder
 
-> [!NOTE] As `agent` in WSL
+> [!NOTE]
+> As `agent` in WSL
 ```bash
 ln -s /mnt/g/.claude_ide/ide ~/.claude/ide
 ```

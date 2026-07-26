@@ -4,14 +4,16 @@
 
 - Create user for the agent, I'll use user `agent`
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 net user agent * /add
 ```
 
 - Run powershell as `agent`, to initialize home directory
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 runas /user:agent /savecred powershell
 ```
@@ -26,7 +28,8 @@ runas /user:agent /savecred powershell
 - Create a local group for blocking filesystem access
 - Add `agent` user to the local group
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 net localgroup LLMs /add
 net localgroup LLMs agent /add
@@ -34,7 +37,8 @@ net localgroup LLMs agent /add
 
 - Deny filesystem access on drive/folder basis
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 function Deny-LLMs {
     param (
@@ -60,7 +64,8 @@ Deny-LLMs G:\NoAIProjects
 - Add OpenSSH server (will take some time)
 - Configure for automatic startup
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Set-Service -Name sshd -StartupType Automatic
@@ -69,7 +74,8 @@ Set-Service -Name sshd -StartupType Automatic
 - Configure for localhost connection to the agent account
 - Configure for ssh key authentication
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 Edit C:\ProgramData\ssh\sshd_config
 ```
@@ -83,7 +89,8 @@ PasswordAuthentication no
 
 - Run the server
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 Start-Service sshd
 ```
@@ -92,7 +99,8 @@ Start-Service sshd
 
 - Set ssh default shell to `powershell`
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 New-ItemProperty @{
     Path         = "HKLM:\SOFTWARE\OpenSSH"
@@ -107,7 +115,8 @@ New-ItemProperty @{
 
 - Configure ssh-agent for automatic startup and run
 
-> [!NOTE] As Administrator
+> [!NOTE]
+> As Administrator
 ```powershell
 Set-Service -Name ssh-agent -StartupType Automatic
 Start-Service ssh-agent
@@ -117,7 +126,8 @@ Start-Service ssh-agent
 - Add ssh key to ssh-agent
 - Copy public key to shared location
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 ssh-keygen -f $env:USERPROFILE\.ssh\agent_ed25519
 ssh-add $env:USERPROFILE\.ssh\agent_ed25519
@@ -126,7 +136,8 @@ copy $env:USERPROFILE\.ssh\agent_ed25519.pub G:\
 
 - Add ssh key to `authorized_keys` on `agent` account
 
-> [!NOTE] As `agent` user (`runas /user:agent /savecred powershell`)
+> [!NOTE]
+> As `agent` user (`runas /user:agent /savecred powershell`)
 ```powershell
 mkdir $env:USERPROFILE\.ssh
 Get-Content G:\\agent_ed25519.pub | Out-File -Encoding ascii $env:USERPROFILE\.ssh\authorized_keys
@@ -134,14 +145,16 @@ Get-Content G:\\agent_ed25519.pub | Out-File -Encoding ascii $env:USERPROFILE\.s
 
 - Test ssh connection
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 ssh agent@localhost
 ```
 
 - You can now run commandline applications as `agent` in a separate login session
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 ssh -t agent@localhost -- <cmd>
 ```
@@ -154,7 +167,8 @@ ssh -t agent@localhost -- <cmd>
 - Install on main account, and init with `agent` user
 - Export to `agent` accessible location
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 wsl --install Ubuntu-24.04 --name Ubuntu-agent
 wsl --export Ubuntu-agent G:\Ubuntu-agent
@@ -163,7 +177,8 @@ wsl --unregister Ubuntu-agent
 
 - Import on claude account
 
-> [!NOTE] As `agent` user (`ssh agent@localhost`)
+> [!NOTE]
+> As `agent` user (`ssh agent@localhost`)
 ```powershell
 wsl --import Ubuntu $env:USERPROFILE\wsl G:\Ubuntu-agent
 rm G:\Ubuntu-agent
@@ -171,7 +186,8 @@ rm G:\Ubuntu-agent
 
 - Configure mirrored networking for easy MCP servers connection
 
-> [!NOTE] As `agent` user (`ssh agent@localhost`)
+> [!NOTE]
+> As `agent` user (`ssh agent@localhost`)
 ```powershell
 edit $env:USERPROFILE\.wslconfig
 ```
@@ -185,7 +201,8 @@ networkingMode=mirrored
 - You can now run commandline applications as `agent` in a WSL2 instance run in a separate login session
 - This command is suitable for running in e.g. Claude Code IDE integration (just use `claude` as the `<cmd>`)
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 ssh -t agent@localhost -- wsl --shell-type=login --cd=$Pwd.Path -- <cmd>
 ```
@@ -195,7 +212,8 @@ ssh -t agent@localhost -- wsl --shell-type=login --cd=$Pwd.Path -- <cmd>
 
 - For easier access to additional terminal windows you can add `screen` to the mix:
 
-> [!NOTE] As your user
+> [!NOTE]
+> As your user
 ```powershell
 ssh -t agent@localhost -- wsl --shell-type=login --cd=$Pwd.Path -- screen <cmd>
 ```
